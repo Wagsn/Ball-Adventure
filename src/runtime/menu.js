@@ -1,6 +1,4 @@
 
-import Sh_Rectangle from '../base/shape_rectangle'
-import Ar_Rectangle from '../base/area_rectangle'
 import Point from '../base/point'
 
 import DataBus from '../databus'
@@ -15,8 +13,7 @@ let databus =new DataBus()
  * button 按钮 style draw 
  */
 
-export default class Menu extends Sh_Rectangle{
+export default class Menu{
   constructor(){
-    super('#C1D169', new Ar_Rectangle(new POint(0, 0))) //芥末色
   }
 }

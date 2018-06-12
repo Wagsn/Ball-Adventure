@@ -27,6 +27,12 @@ export default class ActionQueue {
       actions.delete(a.type)
     }
   }
+  has(a){
+    let actions = ws_gobal_queues.get(this)
+    if (actions && actions.size > 0) {
+      return actions.has(a.type);
+    }
+  }
   /**
    * TODO：未完成，
    * 改变行为的状态

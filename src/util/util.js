@@ -2,10 +2,107 @@
 import Point from '../base/point'
 
 export default class Util {
+  /**
+   * 获取输入矩形内的随机点
+   * @param {Number} startX 
+   * @param {Number} startY 
+   * @param {Number} endX 
+   * @param {Number} endY 
+   */
   static randomPointIn(startX, startY, endX, endY){
     return new Point(startX + Math.random() * (endX - startX), startY + Math.random() * (endY - startY))
   }
-  
+  static isCollide(x1, y1, r1, x2, y2, r2){
+    return Util.distanceXYToXY(x1, y1, x2, y2) < r1+r2;
+  }
+  /**
+   * 计算两点之间的距离
+   * @param {Number} x1 
+   * @param {Number} y1 
+   * @param {Number} x2 
+   * @param {Number} y2 
+   */
+  static distanceXYToXY(x1, y1, x2, y2) {
+    return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+  }
+  /**
+   * 计算方向通过偏移量
+   * 点p1(x1,y1)到点p2(x2,y2)向量的方位角
+   * @param {Number} x1 p1.x
+   * @param {Number} y1 p1.y
+   * @param {Number} x2 p2.x
+   * @param {Number} y2 p2.y
+   */
+  static directionBetweenTwoPoints(x1, y1, x2, y2){
+    return Math.atan2(y2-y1, x2-x1);
+  }  
+  /**
+   * 计算点(x, y)到经过两点(x1, y1)和(x2, y2)的直线的距离
+   * @param {*} x 
+   * @param {*} y 
+   * @param {*} x1 
+   * @param {*} y1 
+   * @param {*} x2 
+   * @param {*} y2 
+   */
+  static distanceXYToLine(x, y, x1, y1, x2, y2) {
+    let a = y2 - y1;
+    let b = x1 - x2;
+    let c = x2 * y1 - x1 * y2;
+
+    return Math.abs(a * x + b * y + c) / Math.sqrt(a * a + b * b);
+  }
+
+  /**
+   * 计算 v1 到 v2 的方位角
+   * 从v2到v1的夹角公式: θ=atan2(v2.y,v2.x)−atan2(v1.y,v1.x)
+   * @param {Number} x1 v1.x
+   * @param {Number} y1 v1.y
+   * @param {Number} x2 v2.x
+   * @param {Number} y2 v2.y
+   */
+  static angleXYXY(x1, y1, x2, y2){
+    return Math.atan2(y2, x2) - Math.atan2(y1, x1);
+  }
+  // 通过方位角获取单位向量
+  static vectorForDirection(direction){
+    let x = 1 * Math.cos(direction);
+    let y = 1 * Math.sin(direction);
+    return {x: x, y: y};
+  }
+  /**
+   * 计算运动球的反射角，
+   * 原理：等于运动球的方向的反角加上两倍的运动小球的方向到圆心向量（运动小球圆心到被撞球圆心）的方位角
+   * @param {Number} x1 运动球的圆心的x值
+   * @param {Number} y1 运动球的圆心的y值
+   * @param {Number} dir1 运动球的方向
+   * @param {Number} x2 被撞球的圆心的x值
+   * @param {Number} y2 被撞球的圆心的y值
+   */
+  static reflectionAngle(x1, y1, dir1, x2, y2){
+    let p =Util.vectorForDirection(dir1);
+    return dir1+Math.PI+2*Util.angleXYXY(x2,y2,p.x,p.y);
+  }
+  // 圆与矩形碰撞检测  
+  // 圆心(x, y), 半径r, 矩形中心(x0, y0), 矩形上边中心(x1, y1), 矩形右边中心(x2, y2)  
+  static isCircleIntersectRectangle(x, y, r, x0, y0, x1, y1, x2, y2) {
+    let w1 = Util.distanceXYXY(x0, y0, x2, y2);
+    let h1 = Util.distanceXYXY(x0, y0, x1, y1);
+    let w2 = Util.distanceXYToLine(x, y, x0, y0, x1, y1);
+    let h2 = Util.distanceXYToLine(x, y, x0, y0, x2, y2);
+
+    if (w2 > w1 + r)
+      return false;
+    if (h2 > h1 + r)
+      return false;
+
+    if (w2 <= w1)
+      return true;
+    if (h2 <= h1)
+      return true;
+
+    return (w2 - w1) * (w2 - w1) + (h2 - h1) * (h2 - h1) <= r * r;
+  }
   /**
    * 求两个矩形相交的面积
    * @param {number} A: start.x

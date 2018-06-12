@@ -14,7 +14,7 @@ export default class DataBus {
   constructor() {  // 单例模式
     if ( instance )
       return instance
-
+    this.initGobalData();
     console.log('In DataBus.Constructor')
 
     instance = this
@@ -24,15 +24,18 @@ export default class DataBus {
 
     this.reset()
   }
-
-  get screenWidth(){
-    return screenWidth
+  /**
+   * 初始化全局变量
+   */
+  initGobalData(){
+    this.screenWidth = window.innerWidth
+    this.screenHeight = window.innerHeight
+    this.version = '1.0.3'
+    this.color ={
+      bg_default: "#EEE8AB"
+    }
+    this.rocker_radius =50;
   }
-
-  get screenHeight(){
-    return screenHeight
-  }
-
 /**
  * 每局的游戏状态
  */
@@ -60,9 +63,7 @@ export default class DataBus {
    */
   removeEnemey(enemy) {
     let temp = this.enemys.shift()
-
     temp.visible = false
-
     this.pool.recover('enemy', enemy)
   }
 
@@ -72,9 +73,7 @@ export default class DataBus {
    */
   removeBullets(bullet) {
     let temp = this.bullets.shift()
-
     temp.visible = false
-
     this.pool.recover('bullet', bullet)
   }
 
@@ -84,9 +83,7 @@ export default class DataBus {
    */
   removeFood(food){
     let temp = this.foods.remove(food);
-
     temp.visible = false
-
     this.pool.recover('food', food)
   }
 
@@ -96,9 +93,7 @@ export default class DataBus {
    */
   removeMonster(monster) {
     let temp = this.foods.remove(monster);
-
     temp.visible = false
-
     this.pool.recover('monster', monster)
   }
   /**
@@ -106,9 +101,7 @@ export default class DataBus {
    */
   removeToPool(type, actor){
     let temp = this.actors[type].remove(actor)
-
     temp.visible = false 
-
     this.pool.recover(type, actor)
   }
 }

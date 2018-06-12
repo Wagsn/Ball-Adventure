@@ -1,63 +1,68 @@
 
-import Sh_Circle from '../base/shape_circle'
-import Ar_Circle from '../base/area_circle' 
+import Util from '../util/util'
+import Player from '../player/player';
 
+// 常量
+const actor_default_id ='1000000';
+const actor_default_type ='actor';
+const actor_default_color ='#FFF';
+const actor_default_mx =0;
+const actor_default_my =0;
+const actor_default_mr =30;
+const actor_default_visible =true;
+const actor_default_isAlive =true;
 
 /**
- * Actor类表示在游戏中活动的东西，
- * 比如NPC怪物boss食物道具等，
- * 其包含update表示逻辑更新，
- * drawTo来在屏幕上绘制自身，
- * TODO：关于游戏的数据的持久化处理，其数据将来自于服务器传入的数据
+ * 演员类，表示在地图上的元素：build，prop，npc的基类
  */
-export default class Actor extends Sh_Circle{
-  constructor(point, radius=20, color = '#FFFFFF', speed =0, direction =0){
-    super({color:color, area: new Ar_Circle(radius, point)})
-    this.speed = speed // 表示当前速度
-    this.direction = direction
-    this.exist = true // 存在于世界的
-    console.log(color)
+export default class Actor {
+  constructor(o=null){
+    o===null?this.init({}):this.init(o);  // 初始化
   }
   /**
-   * 逻辑刷新，刷新，速度方向
+   * 初始化
+   * @param {Actor} o 
    */
-  update(){
-    //
+  init(o){
+    this.id = o.id || actor_default_id   // 全局唯一标识符
+    this.type = o.type || actor_default_type  
+    this.color = o.color || actor_default_color
+    this.mx = o.mx || actor_default_mx 
+    this.my = o.my || actor_default_my 
+    this.mr = o.mr || actor_default_mr 
+    this.visible = o.visible || actor_default_visible;
+    this.isAlive = o.isAlive || actor_default_isAlive;
   }
   /**
-   * 位置移动
+   * 移动到坐标：(x, y)
+   * @param {Number} x 
+   * @param {Number} y 
    */
-  moveTo(po){
-    // 如果位置没有发生变化
-    if (this.speed == 0 || this.area.point.equals(this.po)) {
-      if (databus.frame % 100 == 0) this.logInfo()
-      return
-    }
-    // 如果手指触碰的位置小于一帧的移动量
-    if (this.area.point.distance(this.po) < this.speed) {
-      this.area.point.moveTo(this.po)
-      return
-    }
-    this.direction = this.area.point.directionToXY(this.po.x, this.po.y)
-
-    this.area.point.move(this.direction, this.speed)
+  moveToXY(x, y){
+    this.mx = x;
+    this.my = y;
   }
   /**
-   * 移动状态
+   * 对player产生作用
+   * @param {Player} p 
    */
-  get moveState() {
-    return (this.speed === 0 ? 'dont move' : 'move')
-  }
+  effectPlayer(p){}
   /**
-   * 信息
+   * 逻辑刷新
    */
-  get info() {
-    return '{ ' + 'speed: ' + this.speed + ', point: ' + this.area.point + ', moveState: ' + (this.moveState) + ' }'
-  }
+  update(){}
   /**
-   * log 一些信息
+   * 事件监听
    */
-  logInfo() {
-    console.log('frame: ' + databus.frame + ', info: ' + this.info)
+  initEvent(){}
+  /**
+   * 简单的碰撞检测定义：
+   * @param{Actor} ac: Actor 的实例
+   */
+  isCollideWith(ac) {
+    // 如果不可见或不存在
+    if (!this.visible || !ac.visible || !ac.isAlive || !this.isAlive) { return false }
+    // 如果圆心距小于半径之和，则两个圆相交
+    return ( Util.distanceXYXY(this.mx, this.my, ac.mx, ac.my) < this.mr + ac.mr )
   }
-} 
+}

@@ -14,22 +14,39 @@ export default class EventManager{
     console.log('In EventManager.Constructor')
     this.targets = new WS_EventTarget()
     this.events = []  // events: [move: {type: player_move_normal, direction: 3.14}]
-    // 格式：register:{type:'btn_checked',case:{events:['touchstart','touchend'],determine:{touchstart:fn,touchend:fn},detail:{lastTouch:{x,y}}}}
+    // 格式：register:{type:'btn_checked',wrap:fn,events:['touchstart','touchend'],callback:{touchstart:fn,touchend:fn},detail:{lastTouch:{x,y}}}
+    let register =
+    {
+      type:'btn_checked',
+      wrap:(e)=>{},
+      events:['touchstart','touchend'],
+      callback:{
+        touchstart:(e)=>{},
+        touchend:(e)=>{}
+      },
+      detail:{
+        lastTouch:{
+          x: 10,
+          y: 10
+        }
+      }
+    }
     this.registers = []  // 事件登记表
+    // this.responses = new Map()  // 响应事件表，每种响应类型（events中的type） 作为key
     this.initEvent()  // 将自定义事件绑定在系统事件上
   }
   /**
    * 供外部调用，
    * 添加事件监听器
    */
-  addEventListener(type, listener){
+  addListener(type, listener){
     this.targets.addEventListener(type, listener)
   }
   /**
    * 供外部调用
    * 移除事件监听器
    */
-  removeEventListener(type, listener){
+  removeListener(type, listener){
     this.targets.removeEventListener(type, listener)
   }
   /**
@@ -79,11 +96,12 @@ export default class EventManager{
     // 遍历登记表，计算被传入事件触发的事件，
     // TODO：将触发事件分组，如：registers[e.type]: [Register,Register,Register]表示响应e.type事件的register数组
     // registers: {touchmove: [Register], touchend: [], ...}
+    // registers
+    //this.registers[e.type].forEach((item)=>{})
     this.registers.forEach((item) => { // item 表示各个 register
-      let reason = item.reason
       // 如果存在触发事件的判定函数，且判定函数返回值为true（表示该登记表的事件被触发）
       
-      if (reason.callback[e.type] !== undefined && reason.callback[e.type](e)) { // 判断事件是否被触发
+      if (item.callback[e.type] !== undefined && item.callback[e.type](e)) { // 判断事件是否被触发
         let event = new WS_Event(item.type, e)
         // 增加附带信息
         item.wrap(event)
