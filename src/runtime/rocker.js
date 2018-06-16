@@ -7,6 +7,13 @@ import Circle from '../base/circle';
 
 let databus = new DataBus()
 
+// 摇杆只能在这个范围被唤醒
+let areaX =0
+let areaY =databus.screenHeight/2
+let areaW =databus.screenWidth/2
+let areaH =databus.screenHeight/2
+
+
 /**
  * 摇杆类
  */
@@ -14,10 +21,48 @@ export default class Rocker extends Circle{
   /**
    * 坐标和半径
    */
-  constructor(radius, point) { 
-    super({color:'#99A88d', radius: radius, point: point});
+  constructor(radius, point) {
+    // '#99A88d' 
+    super({color:'rgba(153, 171, 141, 0.5)', radius: radius, point: point});
     this.id = '0001';
     this.visible =false;
+    // 摇杆的显示监听事件注册，当手指按下时摇杆显示（并且在手指按下位置），抬起时消失。
+    let show_register = {
+      type: 'show_rocker',
+      wrap: function (e) {
+        //console.log('show_rocker === isShow: '+ show_register.detail.isShow+', showPoint: '+show_register.detail.showPoint+', touchId: '+show_register.detail.touchId)
+        e.isShow = show_register.detail.isShow;
+        e.showPoint = show_register.detail.showPoint;
+        e.touchId = show_register.detail.touchId;
+      },
+      events: ['touchstart', 'touchend'],
+      callback: {
+        touchstart: function(e) {
+          if(show_register.detail.touchId === -1){  // 首次按下
+            show_register.detail.touchId = e.changedTouches[0].identifier;  // 记录按下id
+            show_register.detail.showPoint = new Point(e.changedTouches[0].clientX,e.changedTouches[0].clientY);
+            show_register.detail.isShow = true;
+            return true;
+          }
+          return false;
+        },
+        touchend: function (e) {
+          if(e.changedTouches[0].identifier === show_register.detail.touchId){  // 已经按下
+            // 引发end事件的id与记录id一致
+            show_register.detail.isShow = false;
+            show_register.detail.touchId = -1;  // 复位
+            return true;
+          }
+          return false;
+        }
+      },
+      detail: {
+        isShow: false,
+        showPoint: null,
+        touchId: -1
+      }
+    }
+    databus.eventManager.login(show_register);
     // 格式：register:{type:'btn_checked',wrap:(e)=>{},events:['touchstart','touchend'],callback:{touchstart:fn,touchend:fn},detail:{lastTouch:{x,y}}}
     let checked_register = { // TODO： 里面不要有this因为不知道其他对象是否监听这个事件
       type: 'rocker_checked',
@@ -25,15 +70,10 @@ export default class Rocker extends Circle{
         e.direction = checked_register.detail.direction;
         e.checked = checked_register.detail.checked;
         e.rockered =checked_register.detail.rockered;
-        //console.log('Rocker.constructor(radius, point) ==> checked_register.wrap(e) e.type: rocker_checked');
-        //console.log('checked: '+e.checked+', rockered: '+e.rockered+', direction: '+e.direction)
-        //console.log(e)
       },
       events: ['touchstart', 'show_rocker'],
       callback: {
-        touchmove: function (e) {  // 我实在想不明白，当按下一个手指没动之后再按下一个手指还会触发第一个手指的touchmove事件
-          //console.log('Rocker.constructor(radius, point) ==> checked_register.callbacke.touchmove(e)');
-          //console.log(e);
+        touchmove: function (e) {
           for(let i=0; i< e.changedTouches.length; i++){
             if (checked_register.detail.touchId !== -1 && e.changedTouches[i].identifier === checked_register.detail.touchId && !checked_register.detail.rocker_point.equalsXY(e.changedTouches[i].clientX, e.changedTouches[i].clientY) ) {
               checked_register.detail.rockered =true;

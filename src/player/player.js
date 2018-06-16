@@ -31,7 +31,7 @@ export default class Player extends Circle {
 
     this.direction = PLAYER_DIRECTION
     this.speed = PLAYER_SPEED
-    this._curr_speed =this.speed;
+    this.curr_speed =this.speed;  // 当前移动速度
     this.score =0;
     this.isAlive =true;
     this.buffs =[]  // 便于管理buff，主要是为了中断buff，
@@ -74,7 +74,7 @@ export default class Player extends Circle {
       }
     }
   }
-  get curr_speed(){ 
+  get _curr_speed(){ 
     let temp =this.speed;
     this.buffs.forEach(item => {
       if (!item.over && item.type === 'speed') {  // Speed increment
@@ -84,6 +84,10 @@ export default class Player extends Circle {
     return temp
   }
   // Buff is effective
+  /**
+   * buff 生效
+   */
+
   buffEffect(){}
   /**
    * 位置移动根据传入的方向

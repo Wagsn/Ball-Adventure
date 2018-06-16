@@ -69,43 +69,6 @@ export default class Main {
       }
     }
     databus.eventManager.login(zoom_register);
-    // 摇杆的显示监听事件注册，当手指按下时摇杆显示（并且在手指按下位置），抬起时消失。
-    let show_register = {
-      type: 'show_rocker',
-      wrap: function (e) {
-        //console.log('show_rocker === isShow: '+ show_register.detail.isShow+', showPoint: '+show_register.detail.showPoint+', touchId: '+show_register.detail.touchId)
-        e.isShow = show_register.detail.isShow;
-        e.showPoint = show_register.detail.showPoint;
-        e.touchId = show_register.detail.touchId;
-      },
-      events: ['touchstart', 'touchend'],
-      callback: {
-        touchstart: function(e) {
-          if(show_register.detail.touchId === -1){  // 首次按下
-            show_register.detail.touchId = e.changedTouches[0].identifier;  // 记录按下id
-            show_register.detail.showPoint = new Point(e.changedTouches[0].clientX,e.changedTouches[0].clientY);
-            show_register.detail.isShow = true;
-            return true;
-          }
-          return false;
-        },
-        touchend: function (e) {
-          if(show_register.detail.touchId !== -1 && e.changedTouches[0].identifier === show_register.detail.touchId){  // 已经按下
-            // 引发end事件的id与记录id一致
-            show_register.detail.isShow = false;
-            show_register.detail.touchId = -1;  // 复位
-            return true;
-          }
-          return false;
-        }
-      },
-      detail: {
-        isShow: false,
-        showPoint: null,
-        touchId: -1
-      }
-    }
-    databus.eventManager.login(show_register);
   }
   /**
    * 游戏重新开始

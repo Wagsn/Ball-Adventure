@@ -35,9 +35,9 @@ export default class Build extends Actor{
       src: this,
       dstId: p.id,
       dst: p,
-      count: 240  // 4 s
+      count: 300  // 5 s
     });
-    speedIncBuff.speedInc =5;
+    speedIncBuff.speedInc =3;
     p.addBuff(speedIncBuff);
   }
 }

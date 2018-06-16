@@ -8,7 +8,7 @@ const __ = {
 /**
  * Buff 类，提供各种增益或减益给其对象，用来描述Skill效果
  * 作用函数，开始时间，延迟时间，当前时间，总时间。
- * TODO：建议改成一次修改player的值，等时间完了再逆运算回去
+ * TODO：生效时间，失效时间，作用函数（每帧调用：动态修改方向，唯一调用：增加生命值），复原函数
  */
 export default class Buff {
   constructor(o=null){
@@ -23,10 +23,10 @@ export default class Buff {
     // TODO：
     // Buff目标
     this.dstId = o.dstId || 0;  // 例如player id
-    this.dst =o.dst;  // 必须要传入的参数
+    this.dst =o.dst;  // 必须要传入的参数 player
     this.id =o.id || 0;  // buff id 一个建筑的多个buff之间的id是不同的
     this.srcId =o.srcId || 0;  // 例如建筑id  
-    this.src =o.src;
+    this.src =o.src; // build
     // Buff 类型
     this.type = o.type || 'defaut';
     // 是否结束
@@ -76,10 +76,6 @@ export default class Buff {
     }
   }
   /**
-   * Buff复原，effect的反向操作
-   */
-  restore(){}
-  /**
    * 结束Buff
    */
   stop(){
@@ -97,6 +93,10 @@ export default class Buff {
   effect(o){
     // TODO：
   }
+  /**
+   * Buff复原，effect的反向操作
+   */
+  restore(){}
   // 帧遍历
   frameLoop() {
     //console.log('Buff.frameLoop()')
