@@ -43,6 +43,14 @@ export default class Actor {
     this.my = y;
   }
   /**
+   * 坐标移动，通过方向与距离
+   */
+  move(direction, distance) { 
+    // sin y cos x
+    this.mx += distance * Math.cos(direction)
+    this.my += distance * Math.sin(direction)
+  }
+  /**
    * 对player产生作用
    * @param {Player} p 
    */

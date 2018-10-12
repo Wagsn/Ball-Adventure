@@ -35,6 +35,8 @@ export default class Player extends Circle {
     this.score =0;
     this.isAlive =true;
     this.buffs =[]  // 便于管理buff，主要是为了中断buff，
+
+    databus.player =this;
     // 消息队列
     this.actionQueue = new ActionQueue()
     // 初始化事件监听
@@ -74,6 +76,13 @@ export default class Player extends Circle {
       }
     }
   }
+  /**
+   * 增加速度 Increase speed
+   * @param {Number} inc Speed increment
+   */
+  incSpeed(inc) {
+    this.curr_speed +=inc 
+  }
   get _curr_speed(){ 
     let temp =this.speed;
     this.buffs.forEach(item => {
@@ -87,8 +96,13 @@ export default class Player extends Circle {
   /**
    * buff 生效
    */
-
-  buffEffect(){}
+  buffEffect(){
+    this.buffs.forEach(item => {
+      if (!item.over) {  // Speed increment
+        item.effect(this) 
+      }
+    });
+  }
   /**
    * 位置移动根据传入的方向
    */
@@ -112,7 +126,12 @@ export default class Player extends Circle {
    * 逻辑刷新 TODO: 改为传入events事件集执行回调函数，包含移动事件(包含移动的类型，方向，距离，目的地)
    */
   update(){
+    this.reset()
+    this.buffEffect()
     this.actionQueue.update()
+  }
+  reset(){
+    this.curr_speed =this.speed
   }
   /**
    * 

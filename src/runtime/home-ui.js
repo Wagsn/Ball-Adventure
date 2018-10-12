@@ -28,25 +28,6 @@ export default class Home_UI {
     // 子view
     this.childs =[]; // View
 
-    let logo = new View({
-      id: 5,
-      sx: (databus.screenWidth/2-150/2),
-      sy: databus.screenHeight/4 -150/2,
-      sw: 150,
-      sh: 150
-    })
-    //logo.visible =false
-    let tag =new View({
-      id: 6,
-      sx: 50,
-      sy: 50,
-      sw: 50,
-      sh: 50,
-      dfColor: 'white',
-      onColor: 'black'
-    })
-    logo.addChild(tag)
-
     let btnw =100
     let btnh =50
     let startbtn = new View({
@@ -59,45 +40,11 @@ export default class Home_UI {
     })
     startbtn.addClickListener((e)=>{
       this.visible =false;
-    })
-    let minbtnw =50;
-    let orderbtn = new View({
-      id: 2,
-      sx: (databus.screenWidth*1/4-minbtnw/2),
-      sy: (databus.screenHeight*4/5-btnh/2),
-      sw: minbtnw,
-      sh: btnh,
-      text: '榜单'
-    })
-    let messagebtn = new View({
-      id: 3,
-      sx: (databus.screenWidth*2/4-minbtnw/2),
-      sy: (databus.screenHeight*4/5-btnh/2),
-      sw: minbtnw,
-      sh: btnh,
-      text: '消息'
-    })
-    let shopbtn = new View({
-      id: 4,
-      sx: (databus.screenWidth*3/4-minbtnw/2),
-      sy: (databus.screenHeight*4/5-btnh/2),
-      sw: minbtnw,
-      sh: btnh,
-      text: '商店'
-    })
-    shopbtn.addClickListener((e)=>{
-      if(shopbtn.textColor ==='black') {
-        shopbtn.textColor ='white'
-      } else {
-        shopbtn.textColor ='black'
+      if(databus.gameOver){
+        databus.gameOver =false;
       }
     })
-    
-    this.childs.push(logo)
     this.childs.push(startbtn);
-    this.childs.push(orderbtn);
-    this.childs.push(messagebtn);
-    this.childs.push(shopbtn);
   }
   initEvent(){}
   /**

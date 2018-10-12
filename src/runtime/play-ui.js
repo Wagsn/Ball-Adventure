@@ -6,8 +6,10 @@ import Camera from "./camera";
 import DataBus from "../databus";
 import Point from "../base/point";
 import Util from "../util/util";
+import Build from "../npc/build";
 
 let databus = new DataBus()
+let count =1;
 
 /**
  * 游戏中界面
@@ -43,8 +45,12 @@ export default class Play_UI { // like view or ui
     this.players.push(this.player);
     this.gameinfo.initPlayer(this.player);
     this.rocker = new Rocker(databus.rocker_radius, new Point(databus.screenWidth/2, databus.screenHeight*3/4))
+    // 游戏地图，包含各种地图数据，尺寸，元素等。。。
     let map = {
       id: '1805292346-0001',
+      bgColor: '#EEE8AB', 
+      mx: 0, 
+      my: 0, 
       builds: [
         {id: 'build_1', type: 'build', color: '#156', mx: 30, my: 50, mr: 60},
         {id: 'build_2', type: 'build', color: '#731', mx: 200, my: 300, mr: 20},
@@ -57,7 +63,10 @@ export default class Play_UI { // like view or ui
         {type: 'gold', mx: 20, my: 500},
         {type: 'gold', mx: 10, my: 300},
       ],
-      bgColor: '#EEE8AB'
+      npcs: [
+        {id: 'fooder_1', type: 'fooder', mx: 100, my: 100},
+        {id: 'monster_1', type: 'monster', mx: 500, my: 500},
+      ],
     }
     map.players = this.players;
 
@@ -68,6 +77,24 @@ export default class Play_UI { // like view or ui
     }
     // 游戏界面
     this.camera = new Camera(camera_o);
+  }
+  randomMap(){
+    // 获取当前时间戳  
+    let timestamp = Date.now()
+    console.log("当前时间戳为：" + timestamp);
+    let map ={
+      id: 'map_'+timestamp+'-'+count,
+      mx: 0,
+      my: 0,
+      mr: 10000,
+      color: 'rgb('+Math.floor(Math.random()*256)+','+Math.floor(Math.random()*256)+','+Math.floor(Math.random()*256)+')',
+      builds:[],
+      props:[],
+      npcs:[]
+    }
+    count++
+    map.builds.push(new Build({}))
+    return map 
   }
   /**
    * 初始化事件监听器
@@ -80,7 +107,7 @@ export default class Play_UI { // like view or ui
     this.players.forEach((player)=>{
       this.gmap.builds.concat(this.gmap.props).concat(this.gmap.npcs).forEach((item)=>{
         if (Util.isCollide(player.mx, player.my, player.mr, item.mx, item.my, item.mr) && item.effectPlayer) {
-          console.log('collision')
+          console.log('Play_UI.collisionDetection ==> '+item.id+' collision with '+player.id)
           item.effectPlayer(player);
         }
       });
@@ -103,6 +130,9 @@ export default class Play_UI { // like view or ui
     this.players.forEach((item) => {
       item.update();
     })
+    // 地图刷新
+    this.gmap.update();
+
     this.camera.focus = this.player.mp;
     // 全局碰撞检测
     this.collisionDetection()
@@ -110,6 +140,13 @@ export default class Play_UI { // like view or ui
     this.recoverDead();
     // 摇杆刷新
     this.rocker.update()
+
+    if (databus.frame !== 0 && databus.frame % 60 ===0) {
+      databus.timer --
+      if (databus.timer ===0) {
+        databus.gameOver =true
+      }
+    }
   }
   /**
    * 在屏幕上绘制自身
@@ -128,7 +165,7 @@ export default class Play_UI { // like view or ui
 
     this.camera.drawTo(ctx)
     //databus.animations.forEach((ani) => { if (ani.isPlaying) { ani.aniRender(ctx) } })
-    this.gameinfo.renderGameScore(ctx, this.player.score)
+    this.gameinfo.drawTo(ctx)
     this.rocker.drawTo(ctx)
   }
 }

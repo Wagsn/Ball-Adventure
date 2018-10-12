@@ -47,7 +47,7 @@ export default class Point {
    */
   moveXY(shiftX, shiftY){
     this.x += shiftX
-    this.y += shiftX
+    this.y += shiftY
   }
   /**
    * 坐标移动，跳跃到某点

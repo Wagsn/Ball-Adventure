@@ -1,4 +1,5 @@
 import Prop from "./prop";
+import DataBus from "../databus";
 
 // 常量
 const gold_default_radius = 10;
@@ -6,6 +7,7 @@ const gold_default_color = '#FF0';
 const gold_default_type = 'gold';
 const gold_default_id = '2000000';
 const gold_default_isAlive = true;
+let databus = new DataBus()
 
 // 1 地形 2 道具 3 NPC
 /**
@@ -29,6 +31,7 @@ export default class Gold extends Prop{
    */
   effectPlayer(p){
     p.score++;
+    databus.score++;
     this.isAlive =false;
   }
 }

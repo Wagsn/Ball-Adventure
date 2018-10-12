@@ -3,10 +3,6 @@ import EventManager from '../libs/event_manager'
 
 let instance //全局管理器的唯一实例
 
-// 记录屏幕尺寸，当尺寸改变时才会发生变化
-let screenWidth = window.innerWidth
-let screenHeight = window.innerHeight
-
 /**
  * 全局状态管理器，TODO: 游戏配置文件 config
  */
@@ -35,6 +31,7 @@ export default class DataBus {
       bg_default: "#EEE8AB"
     }
     this.rocker_radius =50;
+    this.player =null;
   }
 /**
  * 每局的游戏状态
@@ -42,12 +39,13 @@ export default class DataBus {
   reset() {
     this.frame      = 0
     this.score      = 0
+    this.timer      = 60  // 计时 60s
     this.foods      = []
     this.monsters   = []
     this.bullets    = []
     this.enemys     = []
     this.animations = []
-    this.gameOver   = false
+    this.gameOver   = true
   }
 
   /**

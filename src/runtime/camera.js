@@ -23,7 +23,7 @@ export default class Camera {
     this.s_s_m_y = 0;
     this.s_s_m_w = 100;
     this.s_s_m_h = 100;
-    this.focus = new Point(50, 50);
+    this.focus = new Point(databus.screenWidth/2, databus.screenHeight/2);
     // 在屏幕上显示的区域，这个尺寸变化会引起相机显示的等比缩放，与scale值无关
     this.sx = o.startX || 5;
     this.sy = o.startY || 60;
@@ -73,7 +73,7 @@ export default class Camera {
     let r_s_m_w = this.sw/this.scale 
     let r_s_m_h = this.sh/this.scale 
     // 次画建筑 建筑(build)元素包含地图坐标(m_x,m_y)半径(m_r)和颜色(color)
-    this.map.builds.concat(this.map.props).concat(this.map.players).forEach((item)=>{
+    this.map.builds.concat(this.map.players).concat(this.map.npcs).concat(this.map.props).forEach((item)=>{
       // 动态计算小球屏幕显示位置和半径
       let c_s_x = (item.mx - r_s_m_x) * this.scale + this.sx;
       let c_s_y = (item.my - r_s_m_y) * this.scale + this.sy;

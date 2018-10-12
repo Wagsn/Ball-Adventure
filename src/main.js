@@ -1,19 +1,12 @@
 
 import Point from './base/point'
 
-import Player from './player/player'
-
 import BackGround from './runtime/background'
-import GameInfo from './runtime/gameinfo'
 import Music from './runtime/music'
-import Rocker from './runtime/rocker'
 
 import DataBus from './databus'
-import Camera from './runtime/camera';
-import Game_Map from './base/game-map';
-import Util from './util/util';
-import Home_UI from './runtime/home-ui';
 import Play_UI from './runtime/play-ui';
+import Home_UI from './runtime/home-ui';
 
 let ctx = canvas.getContext('2d')
 let databus = new DataBus()
@@ -23,7 +16,10 @@ let databus = new DataBus()
  */
 export default class Main {
   constructor() {
-    console.log('In Main.Constructor')
+    console.log('Main.constructor()')
+    // 获取当前时间戳  
+    let timestamp = Date.now()
+    console.log("当前时间戳为：" + timestamp);
     // 维护当前requestAnimationFrame的id
     this.aniId = 0;
     this.initRegister();
@@ -83,7 +79,7 @@ export default class Main {
     this.bg = new BackGround(ctx)
     this.music = new Music()
     // 游戏主界面 // 含有 game start button
-    //this.homeUI = new Home_UI({sw: databus.screenWidth, sh: databus.screenHeight});
+    this.homeUI = new Home_UI({sw: databus.screenWidth, sh: databus.screenHeight});
     this.playUI = new Play_UI() 
     // 游戏循环绑定
     this.bindLoop = this.loop.bind(this)
@@ -116,8 +112,7 @@ export default class Main {
     this.bg.drawTo(ctx)
 
     this.playUI.drawTo(ctx)
-    //this.homeUI.drawTo(ctx)
-
+    this.homeUI.drawTo(ctx)
 /*
     // 游戏结束停止帧循环
     if (databus.gameOver) {
@@ -135,6 +130,9 @@ export default class Main {
    * TODO: 事件处理，事件生成，事件移除
    */
   update() {
+    if (databus.gameOver === true) {
+      this.homeUI.visible =true;
+    }
     if (databus.gameOver)
       return
     //this.bg.update();

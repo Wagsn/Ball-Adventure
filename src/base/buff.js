@@ -2,6 +2,7 @@ import DataBus from "../databus";
 
 
 let databus = new DataBus();
+
 const __ = {
   timer: Symbol('timer'),  // 定时器
 }
@@ -36,7 +37,7 @@ export default class Buff {
     // 每一帧的时间间隔
     this.interval = 1000 / 60;  // 作用间隔，建议每秒120帧
     // 帧定时器
-    this[__.timer] = 0;
+    this[__.timer] = 0; 
     // 从游戏的哪一帧开始
     this.sf = o.sf || 1;
     // 生效延迟
@@ -82,7 +83,7 @@ export default class Buff {
     this.over =true;
     console.log('Buff.stop():\t\tdescription: buff is stop')
     console.log(this)
-    console.log('sf: '+this.sf+', frame: '+databus.frame)
+    console.log('sf:',this.sf,', frame:',databus.frame)
     if ( this[__.timer] ) clearInterval(this[__.timer])
     this[__.timer] =0;
   }
@@ -111,7 +112,6 @@ export default class Buff {
         this.effect(this.dst);  // Buff生效
         //console.log('buff is effect')
       }
-
       if (this.index >= this.count) {  // 索引达到末尾
         if (this.loop) {  // 无限循环
           this.index = 0

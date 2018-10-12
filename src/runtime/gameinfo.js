@@ -14,6 +14,35 @@ export default class GameInfo {
   /**
    * 
    * @param {CanvasRenderingContext2D} ctx 
+   */
+  drawTo(ctx) {
+    ctx.fillStyle = "#A16D35"
+    ctx.font      = "40px Arial"
+
+    ctx.fillText(
+      databus.score,
+      10,
+      50
+    )
+    ctx.fillText(
+      databus.timer,
+      databus.screenWidth/2,
+      50
+    )
+    if(!this.player){
+      this.player =new Player();
+    }
+    ctx.font      = "20px Arial"
+    ctx.textAlign = 'left'
+    ctx.fillText(
+      'x: '+Math.floor(this.player.mx)+', y: '+Math.floor(this.player.my),
+      10,
+      80
+    );
+  }
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
    * @param {*} score 
    */
   renderGameScore(ctx, score) {
