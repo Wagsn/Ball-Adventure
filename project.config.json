@@ -9,8 +9,8 @@
 	},
 	"compileType": "game",
 	"libVersion": "game",
-	"appid": "wx3882af2dc81e0f93",
-	"projectname": "Ball%20War",
+	"appid": "touristappid",
+	"projectname": "Ball-Adventure",
 	"isGameTourist": true,
 	"condition": {
 		"search": {
