@@ -1,6 +1,6 @@
 # Ball-Adventure
 
-## quickstart
+Ball-Adventure 是一款微信小游戏，玩家控制球进行世界冒险，途中会遭遇道具，怪物及npc，各种地形等。
 
 ## 源码目录介绍
 ```
