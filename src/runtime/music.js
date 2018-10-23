@@ -1,5 +1,6 @@
 
 let instance
+let audios = {};
 
 /**
  * 全局唯一的的音效管理器
@@ -24,7 +25,8 @@ export default class Music {
     this.playBgm()
 
     // TODO：databus.addEventListener('game_play', ()=>{ this.playBgm() })
-    wx.onShow(() => { this.playBgm()})  // 当界面显示的时候播放背景音乐
+    // 当界面显示的时候播放背景音乐
+    wx.onShow(() => { this.playBgm()})
   }
 
   playBgm() {
@@ -41,4 +43,36 @@ export default class Music {
     this.boomAudio.play()
   }
   
+  /**
+   * 将音频加载进游戏
+   * @param {string} tag 音频标签
+   * @param {string} url 音频路径
+   */
+  loadAudio(tag, url) {
+    audios.tag = new Audio()
+    audios.tag.src = url
+  }
+
+  /**
+   * 播放音频
+   * @param {string} tag 
+   */
+  playAudio(tag) {
+    audios.tag.play();
+  }
+
+  /**
+   * 暂停音频
+   * @param {string} tag 
+   */
+  pauseAudio(tag) {
+    audios.tag.pause();
+  }
+
+  /**
+   * 停止音频
+   * @param {string} tag 
+   */
+  stopAudio(tag) {
+  }
 }
