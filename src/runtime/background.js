@@ -1,9 +1,6 @@
 
 import Point from '../base/point'
-import DataBus from '../databus';
-
-const screenWidth = window.innerWidth
-const screenHeight = window.innerHeight
+import DataBus from '../databus'
 
 const color_bg_default = "#EEE8AB"
 let databus =new DataBus()
@@ -13,7 +10,10 @@ let databus =new DataBus()
  * 提供update和render函数实现背景功能
  */
 export default class BackGround {
-  constructor(ctx){
+  constructor(){
+    this.init();
+  }
+  init(){
     // 在屏幕上的显示区域
     this.sx = 0;
     this.sy = 0;
@@ -35,7 +35,7 @@ export default class BackGround {
     ctx.fillRect(this.sx, this.sy, this.sw, this.sh);
   }
   /**
-   * 逻辑，TODO：颜色渐变
+   * 逻辑，TODO：颜色渐变，图片幻灯
    */
   update() {  }
 }
