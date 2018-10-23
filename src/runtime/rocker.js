@@ -2,7 +2,7 @@
 import Point from '../base/point'
 
 import DataBus from '../databus'
-import ActionQueue from '../../libs/action_queue'
+import ActionQueue from '../../lib/action_queue'
 import Circle from '../base/circle';
 
 let databus = new DataBus()

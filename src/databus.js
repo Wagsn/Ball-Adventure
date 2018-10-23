@@ -1,5 +1,5 @@
-import Pool from '../libs/pool'
-import EventManager from '../libs/event_manager'
+import Pool from '../lib/pool'
+import EventManager from '../lib/event_manager'
 
 let instance //全局管理器的唯一实例
 
@@ -7,7 +7,7 @@ let instance //全局管理器的唯一实例
  * 全局状态管理器，TODO: 游戏配置文件 config
  */
 export default class DataBus {
-  constructor() {  // 单例模式
+  constructor() {
     if ( instance )
       return instance
     this.initGobalData();
