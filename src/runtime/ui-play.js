@@ -7,10 +7,10 @@ import DataBus from "../databus";
 import Point from "../base/point";
 import Util from "../util/util";
 import Build from "../npc/build";
-import FileUtil from "../util/file-util"
+import FileUtilWX from "../util/file-util-wx"
 
 let databus = new DataBus()
-let fileUtil = new FileUtil()
+let fileUtil = new FileUtilWX()
 let count =1;
 
 /**

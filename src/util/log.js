@@ -20,4 +20,5 @@ export default class Logger {
             instance = new Logger();
         }
     }
+    static log = console.log
 }
