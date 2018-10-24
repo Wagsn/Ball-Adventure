@@ -12,15 +12,14 @@ export default class Music {
 
     instance = this
 
-    this.bgmAudio = new Audio() // weapp-adapter.js 
-    this.bgmAudio.loop = true
-    this.bgmAudio.src  = 'res/audio/bgm.mp3'
+    this.init()
+  }
 
-    this.shootAudio     = new Audio()
-    this.shootAudio.src = 'res/audio/bullet.mp3'
-
-    this.boomAudio     = new Audio()
-    this.boomAudio.src = 'res/audio/boom.mp3'
+  init(){
+    this.loadAudio('bgm', 'res/audio/bgm.mp3')
+    this.loopAudio('bgm')
+    this.loadAudio('shoot', 'res/audio/bullet.mp3')
+    this.loadAudio('boom', 'res/audio/boom.mp3')
 
     this.playBgm()
 
@@ -29,28 +28,45 @@ export default class Music {
     wx.onShow(() => { this.playBgm()})
   }
 
+  /**
+   * 播放背景音乐
+   */
   playBgm() {
-    this.bgmAudio.play()
+    this.playAudio('bgm')
   }
 
   playShoot() {
-    this.shootAudio.currentTime = 0
-    this.shootAudio.play()
+    this.replayAudio('shoot')
   }
 
   playExplosion() {
-    this.boomAudio.currentTime = 0
-    this.boomAudio.play()
+    this.replayAudio('boom')
   }
   
   /**
-   * 将音频加载进游戏
+   * 加载音频资源
    * @param {string} tag 音频标签
    * @param {string} url 音频路径
    */
   loadAudio(tag, url) {
-    audios[tag] = new Audio()
+    audios[tag] = new Audio()  // weapp-adapter.js 
     audios[tag].src = url
+  }
+
+  /**
+   * 开启循环播放
+   * @param {string} tag 
+   */
+  loopAudio(tag){
+    audios[tag].loop = true
+  }
+
+  /**
+   * 关闭循环播放
+   * @param {string} tag 
+   */
+  unloopAudio(tag){
+    audios[tag].loop = false
   }
 
   /**
@@ -62,6 +78,15 @@ export default class Music {
   }
 
   /**
+   * 重新播放音频
+   * @param {string} tag 
+   */
+  replayAudio(tag) {
+    audios[tag].currentTime = 0
+    audios[tag].play()
+  }
+
+  /**
    * 暂停音频
    * @param {string} tag 
    */
@@ -70,9 +95,11 @@ export default class Music {
   }
 
   /**
-   * 停止音频
-   * @param {string} tag 
+   * 对音频执行某个操作
+   * @param {string} tag 音频标签
+   * @param {string} fun 执行函数
    */
-  stopAudio(tag) {
-  }
+  // run(tag, fun){
+  //   audios[tag][fun]()
+  // }
 }
