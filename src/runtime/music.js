@@ -49,8 +49,8 @@ export default class Music {
    * @param {string} url 音频路径
    */
   loadAudio(tag, url) {
-    audios.tag = new Audio()
-    audios.tag.src = url
+    audios[tag] = new Audio()
+    audios[tag].src = url
   }
 
   /**
@@ -58,7 +58,7 @@ export default class Music {
    * @param {string} tag 
    */
   playAudio(tag) {
-    audios.tag.play();
+    audios[tag].play();
   }
 
   /**
@@ -66,7 +66,7 @@ export default class Music {
    * @param {string} tag 
    */
   pauseAudio(tag) {
-    audios.tag.pause();
+    audios[tag].pause();
   }
 
   /**

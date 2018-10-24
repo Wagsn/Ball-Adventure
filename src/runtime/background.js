@@ -1,18 +1,21 @@
-
-import Point from '../base/point'
+// 游戏背景
 import DataBus from '../databus'
 
+// 默认背景颜色
 const color_bg_default = "#EEE8AB"
 let databus =new DataBus()
 
 /**
- * 游戏背景类
- * 提供update和render函数实现背景功能
+ * 游戏背景类，UI组件
+ * 提供update和drawTo函数实现背景功能
  */
 export default class BackGround {
   constructor(){
     this.init();
   }
+  /**
+   * 初始化
+   */
   init(){
     // 在屏幕上的显示区域
     this.sx = 0;

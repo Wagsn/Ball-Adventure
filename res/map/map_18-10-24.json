@@ -1,0 +1,23 @@
+{
+    "version": "0.0.1",
+    "id": "1805292346-0001",
+    "bgColor": "#EEE8AB", 
+    "mx": 0, 
+    "my": 0, 
+    "builds": [
+      {"id": "build_1", "type": "build", "color": "#156", "mx": 30, "my": 50, "mr": 60},
+      {"id": "build_2", "type": "build", "color": "#731", "mx": 200, "my": 300, "mr": 20},
+      {"id": "build_3", "type": "build", "color": "#497", "mx": 100, "my": 400, "mr": 90},
+      {"id": "build_4", "type": "build", "color": "#995", "mx": 1000, "my": 600, "mr": 100},
+      {"id": "build_5", "type": "build", "color": "#359", "mx": 10, "my": 4000, "mr": 3000},
+      {"id": "build_6", "type": "build", "color": "#FD5", "mx": -1000, "my": -400, "mr": 900}
+    ],
+    "props": [
+      {"type": "gold", "mx": 20, "my": 500},
+      {"type": "gold", "mx": 10, "my": 300}
+    ],
+    "npcs": [
+      {"id": "fooder_1", "type": "fooder", "mx": 100, "my": 100},
+      {"id": "monster_1", "type": "monster", "mx": 500, "my": 500}
+    ]
+  }

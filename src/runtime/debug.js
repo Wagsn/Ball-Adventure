@@ -1,5 +1,5 @@
 
-import FileTool from '../util/file'
-var ft = new FileTool()
+import FileUtil from '../util/file'
+var fu = new FileUtil()
 
-console.log(ft.readAsJson('/res/map/20002.json'))
+console.log(fu.readAsJson('/res/map/20002.json'))

@@ -1,5 +1,5 @@
 import Pool from '../lib/pool'
-import EventManager from '../lib/event_manager'
+import EventManager from '../lib/event-manager'
 
 let instance //全局管理器的唯一实例
 

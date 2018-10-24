@@ -2,7 +2,7 @@
 import Point from '../base/point'
 
 import DataBus from '../databus'
-import ActionQueue from '../../lib/action_queue'
+import ActionQueue from '../../lib/action-queue'
 import Circle from '../base/circle';
 
 let databus = new DataBus()
@@ -15,7 +15,7 @@ let areaH =databus.screenHeight/2
 
 
 /**
- * 摇杆类
+ * UI组件-摇杆类
  */
 export default class Rocker extends Circle{
   /**

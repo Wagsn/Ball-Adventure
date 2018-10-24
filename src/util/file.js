@@ -4,23 +4,29 @@ let fsm;
 let encoding = 'utf-8'
 
 /**
- * 文件处理工具，使用FileReader
+ * 全局唯一的文件处理工具，使用FileReader
  */
-export default class FileTool {
+export default class FileUtil {
 
+    /**
+     * 构造器
+     */
     constructor() {
         if ( instance )
             return instance
         instance = this
-        if (FileTool.checkFileSystemManager()) {
-            fsm = wx.getFileSystemManager();
-        }
+        
         this.init();
     }
 
+    /**
+     * 初始化
+     */
     init(){
         // 判断运行时是否支持FileReader接口 
-        FileTool.checkFileSystemManager();
+        if (FileUtil.checkFileSystemManager()) {
+            fsm = wx.getFileSystemManager();
+        }
     }
 
     /**
@@ -43,6 +49,9 @@ export default class FileTool {
         } else {}
     }
 
+    /**
+     * 检查是否支持FileReader接口
+     */
     static checkFileReader(){
         if(typeof FileReader == 'undefined'){ 
             console.error("不支持FileReader接口！"); 
@@ -51,6 +60,9 @@ export default class FileTool {
         return true; 
     }
 
+    /**
+     * 检查是否支持FileSystemManager接口
+     */
     static checkFileSystemManager(){
         if(typeof wx.getFileSystemManager == 'undefined'){ 
             console.error("不支持FileSystemManager接口！"); 

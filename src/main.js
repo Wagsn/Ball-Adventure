@@ -1,12 +1,12 @@
 
 import Point from './base/point'
 
+import DataBus from './databus'
+
 import BackGround from './runtime/background'
 import Music from './runtime/music'
-
-import DataBus from './databus'
-import Play_UI from './runtime/play-ui';
-import Home_UI from './runtime/home-ui';
+import Play_UI from './runtime/ui-play';
+import Home_UI from './runtime/ui-home';
 
 let ctx = canvas.getContext('2d')
 let databus = new DataBus()
@@ -51,7 +51,6 @@ export default class Main {
               zoom_register.detail.scaling_ratio = new_distance/zoom_register.detail.old_distance
               return true;
             }
-            return false;
           }
         },
         touchend: function (e) {

@@ -13,7 +13,16 @@ const __ ={
 export default class View {
   constructor(o=null){
     o===null ? this.init({}) : this.init(o);
-    // click_register
+    // 事件注册
+    this.eventRegister()
+    // 事件监听
+    this.initEvent();
+  }
+  /**
+   * 事件注册，该组件将产生该事件
+   */
+  eventRegister(){
+    // click_register 自定义事件注册
     let click_reg = { 
       type: 'view_click',
       wrap: (e) => {  // 当发生点击事件时这个函数才会被调用
@@ -56,10 +65,8 @@ export default class View {
         touchId: -1,
       }
     }
-    databus.eventManager.login(click_reg) 
-    this.initEvent();
+    databus.eventManager.login(click_reg)
   }
-  
   /**
    * 初始化
    * @param {*} o 
@@ -82,13 +89,20 @@ export default class View {
     this.hasText = o.text !== undefined // 如果不想显示文字，将其改成false
     this[__.text] = o.text || 'start'  // this[__.text]
     this.textColor = 'black'
-
+    // 父视图
     this.parent = o.parent || null 
-    // 子view
+    // 子视图
     this.childs =[]
   }
   /**
-   * 添加子view
+   * 设置父视图
+   * @param {View} v 
+   */
+  setParent(v){
+    this.parent =v;
+  }
+  /**
+   * 添加子视图
    * @param {View} v 
    */
   addChild(v) {
@@ -96,7 +110,7 @@ export default class View {
     this.childs.push(v);
   }
   /**
-   * 移出子view
+   * 移出子视图
    * @param {View} v 
    */
   removeChild(v){
@@ -116,6 +130,7 @@ export default class View {
    * @param {Function} listener 
    */
   addClickListener(listener){
+    // 判断是否可见，不可见不能触发事件
     databus.eventManager.addListener('view_click', ((e)=>{
       if (e.viewId === this.id) {
         listener(e);  
@@ -123,7 +138,7 @@ export default class View {
     }).bind(this));
   }
   /**
-   * 时间初始化
+   * 事件监听
    */
   initEvent(){}
   /**

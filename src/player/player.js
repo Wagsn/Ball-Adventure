@@ -1,7 +1,7 @@
 
 import Point from '../base/point'
 import Circle from '../base/circle';
-import ActionQueue from '../../lib/action_queue'
+import ActionQueue from '../../lib/action-queue'
 import DataBus from '../databus'
 import Util from '../util/util';
 import Buff from '../base/buff';

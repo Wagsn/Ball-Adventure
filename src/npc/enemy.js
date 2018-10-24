@@ -15,6 +15,9 @@ function rnd(start, end){
   return Math.floor(Math.random() * (end - start) + start)
 }
 
+/**
+ * 敌人
+ */
 export default class Enemy extends Animation {
   constructor() {
     super(ENEMY_IMG_SRC, ENEMY_WIDTH, ENEMY_HEIGHT)

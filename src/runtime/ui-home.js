@@ -4,7 +4,7 @@ import DataBus from "../databus";
 let databus = new DataBus()
 
 /**
- * 游戏主界面
+ * 菜单界面
  */
 export default class Home_UI {
   constructor(o=null){

@@ -7,12 +7,14 @@ import DataBus from "../databus";
 import Point from "../base/point";
 import Util from "../util/util";
 import Build from "../npc/build";
+import FileUtil from "../util/file"
 
 let databus = new DataBus()
+let fileUtil = new FileUtil()
 let count =1;
 
 /**
- * 游戏中界面
+ * 游戏界面
  */
 export default class Play_UI { // like view or ui
   constructor(o=null){
@@ -45,29 +47,8 @@ export default class Play_UI { // like view or ui
     this.players.push(this.player);
     this.gameinfo.initPlayer(this.player);
     this.rocker = new Rocker(databus.rocker_radius, new Point(databus.screenWidth/2, databus.screenHeight*3/4))
-    // 游戏地图，包含各种地图数据，尺寸，元素等。。。
-    let map = {
-      id: '1805292346-0001',
-      bgColor: '#EEE8AB', 
-      mx: 0, 
-      my: 0, 
-      builds: [
-        {id: 'build_1', type: 'build', color: '#156', mx: 30, my: 50, mr: 60},
-        {id: 'build_2', type: 'build', color: '#731', mx: 200, my: 300, mr: 20},
-        {id: 'build_3', type: 'build', color: '#497', mx: 100, my: 400, mr: 90},
-        {id: 'build_4', type: 'build', color: '#995', mx: 1000, my: 600, mr: 100},
-        {id: 'build_5', type: 'build', color: '#359', mx: 10, my: 4000, mr: 3000},
-        {id: 'build_6', type: 'build', color: '#FD5', mx: -1000, my: -400, mr: 900},
-      ],
-      props: [  // 道具
-        {type: 'gold', mx: 20, my: 500},
-        {type: 'gold', mx: 10, my: 300},
-      ],
-      npcs: [
-        {id: 'fooder_1', type: 'fooder', mx: 100, my: 100},
-        {id: 'monster_1', type: 'monster', mx: 500, my: 500},
-      ],
-    }
+    // 游戏地图，包含各种地图数据，尺寸，元素等。从地图文件中载入。
+    let map = fileUtil.readAsJson("/res/map/map_18-10-24.json")
     map.players = this.players;
 
     this.gmap = new Game_Map(map);
@@ -78,6 +59,10 @@ export default class Play_UI { // like view or ui
     // 游戏界面
     this.camera = new Camera(camera_o);
   }
+
+  /**
+   * 生成随机地图
+   */
   randomMap(){
     // 获取当前时间戳  
     let timestamp = Date.now()

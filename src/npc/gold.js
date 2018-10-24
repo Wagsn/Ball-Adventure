@@ -9,7 +9,6 @@ const gold_default_id = '2000000';
 const gold_default_isAlive = true;
 let databus = new DataBus()
 
-// 1 地形 2 道具 3 NPC
 /**
  * 金子，PC碰到后会消失，给与玩家的效果是增加玩家的分数
  */
