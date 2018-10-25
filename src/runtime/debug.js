@@ -7,7 +7,7 @@ var fu = new FileUtilWX()
 // console.log(fu.readAsJson('/res/map/20002.json'))
 
 
-FileUtilWX.writeAsJson('/res/map/map_18-10-24.json', fu.readAsJson('/res/map/map_18-10-24.json'))
+// FileUtilWX.writeAsJson({path: '/res/map/map_18-10-24.json', data: fu.readAsJson('/res/map/map_18-10-24.json')})
 
 
 // console.log('directory: '+Path.dirname('http://usr/res/map/20003.json'))
@@ -33,3 +33,5 @@ FileUtilWX.writeAsJson('/res/map/map_18-10-24.json', fu.readAsJson('/res/map/map
 //     }
 // })
 // fs.writeFileSync(`${wx.env.USER_DATA_PATH}/hello.txt`, 'hello, world', 'utf8')
+
+console.log(Path.modext('/sss/ss/test.txt', '.json'));
