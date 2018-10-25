@@ -28,23 +28,26 @@ export default class FileUtilWX {
     }
 
     /**
-     * 将对象保存为JSON文件，未检查
-     * @param {string} url 文件路径：相对或绝对路径
-     * @param {string} obj 待保存的JS对象
+     * 将对象保存为JSON文件，未检查，
+     * @Example: obj={path: '/test/usr.json', data: {name: 'name', add: 'xian jie'}}
+     * @param {string} obj 文件路径：相对或绝对路径，待保存的JS对象
      */
-    static writeAsJson(url, obj) {
-        // 完整路径
-        let path = FileUtilWX.fullPath(url)
-        console.log('path: '+path);
-        let data = JSON.stringify(obj)
-
+    static writeAsJson(obj) {
+        // arguments parsing.
+        let path = FileUtilWX.fullPath(obj.path)
+        let data = JSON.stringify(obj.data)
+        // Print save target path to log.
+        console.log('save target path: '+path);
+        // Call WeChat API to write files.
         fsm.writeFile({
             filePath: path,
             data: data,
             encoding: encoding,
             success: ()=>{},
             fail: (res)=>{
+                // If the parent directory does not exist.
                 if (res.errMsg.search('fail no')!==-1){
+                    // Create all parent directory required for file path.
                     FileUtilWX.mkdir({
                         path: Path.dirname(path),
                         recursive: true,
@@ -55,6 +58,20 @@ export default class FileUtilWX {
                 }
             }
         })
+    }
+
+    /**
+     * @TODO 未完成
+     * @INFO 将数据保存为文本文件（json，txt，html，js等），data可能为object或者string
+     * @param {*} obj 
+     */
+    static writeAs(obj){
+        let path = obj.path   // {dir, name, type} {dir: '/test1', name: 'test2', type: 'json'}
+        let data = obj.data
+        let type = obj.type 
+        let ext = obj.ext  // txt json ...
+
+        //
     }
 
     /**
@@ -74,9 +91,9 @@ export default class FileUtilWX {
             },
             fail: (res)=>{
                 let result;
-                // 父路径不存在
+                // The parent directory does not exist.
                 if (res.errMsg.search('fail no')!==-1) {
-                    // 是否在父路径不存在的情况下创建该目录
+                    // Create the parent directory if no parent directory exists.
                     if (obj.recursive) {
                         FileUtilWX.mkdir({
                             path: Path.dirname(obj.path),
