@@ -7,10 +7,8 @@ import DataBus from "../databus";
 import Point from "../base/point";
 import Util from "../util/util";
 import Build from "../npc/build";
-import FileUtilWX from "../util/file-util-wx"
 
 let databus = new DataBus()
-let fileUtil = new FileUtilWX()
 let count =1;
 
 /**
@@ -48,7 +46,10 @@ export default class Play_UI { // like view or ui
     this.gameinfo.initPlayer(this.player);
     this.rocker = new Rocker(databus.rocker_radius, new Point(databus.screenWidth/2, databus.screenHeight*3/4))
     // 游戏地图，包含各种地图数据，尺寸，元素等。从地图文件中载入。
-    let map = fileUtil.readAsJson("/res/map/map_18-10-24.json")
+    let map = ws.load({
+      type: 'json',
+      path: '/res/map/map_18-10-24.json'
+    })   // fileUtil.readAsJson("/res/map/map_18-10-24.json")
     map.players = this.players;
 
     this.gmap = new Game_Map(map);
